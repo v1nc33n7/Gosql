@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Sql</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+                font-family: 'Roboto', sans-serif;
+            }
+            body {
+                background-color: #f2f1f1;
+            }
+            .respnse-table {
+                table-layout: auto;
+                font-size: smaller;
+
+                overflow-y: auto;
+                height: 30vh;
+            }
+            .respnse-table thead th {
+                position: sticky;
+                top: 0px; 
+            }
+            th {
+                padding: 8px 16px;
+                border: 1px solid #8e907a;
+                background: #f2f1f1;
+            }
+            .top-bar {
+                height: 8vh;
+                margin: 1vh;
+                display: flex;
+                align-items: center;
+                background-color: #9aaba4;
+                border-radius: 5px;
+                box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+            }
+            .links {
+                display: flex;
+                margin-left: auto;
+                padding-right: 1vw;
+                align-self: flex-end;
+            }
+            .logo {
+                margin-left: 3vw;
+            }
+            .content {
+                display: flex;
+            }
+            .task-list {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 8vw;
+                height: 87vh;
+                margin: 1vh;
+                background-color: #837a75;
+                border-radius: 5px;
+                box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+            }
+            .task {
+                margin-top: 1vh;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="top-bar">
+            <div class="logo">Logo</div>
+            <div class="links">Link, Link, Link</div>
+        </div>
+        <div class="content">
+            <div class="task-list" hx-get="/l" hx-trigger="every 2s">
+                <p>Task 1</p>
+                <p>Talk 2</p>
+            </div>
+            <div class="task">
+                Task: {{.Number}}<br>
+                {{.Question}}<br>
+    
+                <form hx-post="/a/{{.Number}}" hx-target="#response">
+                    <textarea name="solution" cols="80"></textarea>
+                    <button type="submit">Send</button>  
+                </form>
+                
+                <div class="response" id="response"></div>
+    
+                <br>
+                <a class="previous" href="/task/{{.Previous}}">Previous</a>
+                <a class="next" href="/task/{{.Next}}">Next</a>
+            </div>
+        </div>
+    </body>
+</html>

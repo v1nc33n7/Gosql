@@ -1,0 +1,27 @@
+{{if .Error}}
+    <p>{{.Error}}</p>
+{{end}}
+{{if .Verify}}
+{{end}}
+{{if .Table}}
+<div class="respnse-table">
+    <table>
+        <thead>
+            <tr>
+                {{range $col := .Columns}}
+                <th>{{$col}}</th>
+                {{end}}
+            </tr>
+        </thead>
+        <tbody>
+            {{range $row := .Table}}
+            <tr>
+                {{range $row}}
+                <td>{{.}}</td>
+                {{end}}
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+</div>
+{{end}}

@@ -1,0 +1,30 @@
+{
+    "1": {
+        "Question": "Query the database for all properties that have more than 3 bedrooms and cost more than $250,000.",
+        "Solution": "SELECT * FROM ny_houses WHERE beds > 3 AND price > 250000"
+    },
+    "2": {
+        "Question": "Find out the average price of properties in New York City. Name column \"average_price\"",
+        "Solution": "SELECT AVG(price) as average_price FROM ny_houses"
+    },
+    "3": {
+        "Question": "Identify the maximum number of bedrooms among all properties. Name column \"max_bedrooms\"",
+        "Solution": "SELECT MAX(beds) as max_bedrooms FROM ny_houses"
+    },
+    "4": {
+        "Question": "Determine how many properties are there in the database where more than 2 bathrooms and less than 5 beds. Name column \"num_properties\"",
+        "Solution": "SELECT COUNT(*) as num_properties FROM ny_houses WHERE bath > 2 AND beds < 5"
+    },
+    "5": {
+        "Question": "Find out the total square footage of properties with 2 bathrooms and a price less than $300,000. Name column \"total_sqft\"",
+        "Solution": "SELECT SUM(propertysqft) as total_sqft FROM ny_houses WHERE bath = 2 AND price < 300000"
+    },
+    "6": {
+        "Question": "Find the address and state of properties with 1 bedroom and a latitude greater than 40.75",
+        "Solution": "SELECT address, state FROM ny_houses WHERE beds = 1 AND latitude > 40.75"
+    },
+    "7": {
+        "Question": "Identify the average square footage of properties in the database where more than 3 bathrooms and cost less than $600,0",
+        "Solution": "SELECT AVG(propertysqft) FROM ny_houses WHERE bath > 3 AND price < 600"
+    }
+}
