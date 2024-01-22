@@ -19,7 +19,12 @@ type Request struct {
 	Query   string
 	Respond Table
 	Done    chan error
-	DB      *sql.DB
+}
+
+type Task struct {
+	Question string
+	Solution string
+	Respond  Table
 }
 
 type Database struct {
@@ -29,31 +34,8 @@ type Database struct {
 	Name string
 }
 
-func (d *Database) runQuerys(req chan *Request) error {
-	connStr := fmt.Sprintf("user=%s dbname=%s password=%s", d.User, d.Name, d.Pass)
-
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	queue := make(chan int, QueueRate)
-	for r := range req {
-		queue <- 1
-
-		r.DB = db
-		go func(r *Request) {
-			r.Done <- r.query()
-			<-queue
-		}(r)
-	}
-
-	return nil
-}
-
-func (r *Request) query() error {
-	rows, err := r.DB.Query(r.Query)
+func (r *Request) query(db *sql.DB) error {
+	rows, err := db.Query(r.Query)
 	if err != nil {
 		return err
 	}
@@ -88,5 +70,28 @@ func (r *Request) query() error {
 		qResult = append(qResult, sRow)
 	}
 	r.Respond.Rows = qResult
+
+	return nil
+}
+
+func (d *Database) runQuerys(req chan *Request) error {
+	connStr := fmt.Sprintf("user=%s dbname=%s password=%s", d.User, d.Name, d.Pass)
+
+	db, err := sql.Open("postgres", connStr)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	queue := make(chan int, QueueRate)
+	for r := range req {
+		queue <- 1
+
+		go func(r *Request) {
+			r.Done <- r.query(db)
+			<-queue
+		}(r)
+	}
+
 	return nil
 }

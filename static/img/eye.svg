@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1920"
+   height="1080"
+   viewBox="0 0 1920 1080"
+   version="1.1"
+   id="svg1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient71">
+      <stop
+         style="stop-color:#127744;stop-opacity:0;"
+         offset="0"
+         id="stop72" />
+      <stop
+         style="stop-color:#04120c;stop-opacity:0.19215687;"
+         offset="0.45556691"
+         id="stop73" />
+      <stop
+         style="stop-color:#127744;stop-opacity:1;"
+         offset="1"
+         id="stop71" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient2">
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="0"
+         id="stop3" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0.0627451;"
+         offset="0.52570856"
+         id="stop4" />
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <radialGradient
+       xlink:href="#linearGradient2"
+       id="radialGradient3"
+       cx="960.27179"
+       cy="535.81268"
+       fx="960.27179"
+       fy="535.81268"
+       r="483.70303"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.98260555,0,0,0.98260559,16.575224,9.3958493)" />
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       id="filter66"
+       x="0"
+       y="0"
+       width="1"
+       height="1">
+      <feTurbulence
+         type="fractalNoise"
+         baseFrequency="20 40"
+         numOctaves="4"
+         seed="360"
+         result="turbulence"
+         id="feTurbulence65" />
+      <feComposite
+         in="SourceGraphic"
+         in2="turbulence"
+         operator="in"
+         result="composite1"
+         id="feComposite65" />
+      <feColorMatrix
+         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 4 -1 "
+         result="color"
+         id="feColorMatrix65" />
+      <feFlood
+         flood-opacity="0"
+         flood-color="rgb(21,40,57)"
+         result="flood"
+         id="feFlood65" />
+      <feMerge
+         result="merge"
+         id="feMerge66">
+        <feMergeNode
+           in="flood"
+           id="feMergeNode65" />
+        <feMergeNode
+           in="color"
+           id="feMergeNode66" />
+      </feMerge>
+      <feComposite
+         in2="SourceGraphic"
+         operator="in"
+         result="composite2"
+         id="feComposite66" />
+    </filter>
+    <radialGradient
+       xlink:href="#linearGradient71"
+       id="radialGradient72"
+       cx="966.60406"
+       cy="540.32288"
+       fx="966.60406"
+       fy="540.32288"
+       r="208.7177"
+       gradientUnits="userSpaceOnUse" />
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       id="filter81"
+       x="0"
+       y="0"
+       width="1"
+       height="1">
+      <feTurbulence
+         type="fractalNoise"
+         baseFrequency="20 40"
+         numOctaves="4"
+         seed="360"
+         result="turbulence"
+         id="feTurbulence80" />
+      <feComposite
+         in="SourceGraphic"
+         in2="turbulence"
+         operator="in"
+         result="composite1"
+         id="feComposite80" />
+      <feColorMatrix
+         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 4 -1 "
+         result="color"
+         id="feColorMatrix80" />
+      <feFlood
+         flood-opacity="0"
+         flood-color="rgb(21,40,57)"
+         result="flood"
+         id="feFlood80" />
+      <feMerge
+         result="merge"
+         id="feMerge81">
+        <feMergeNode
+           in="flood"
+           id="feMergeNode80" />
+        <feMergeNode
+           in="color"
+           id="feMergeNode81" />
+      </feMerge>
+      <feComposite
+         in2="SourceGraphic"
+         operator="in"
+         result="composite2"
+         id="feComposite81" />
+    </filter>
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       id="filter82"
+       x="-0.29965471"
+       y="-0.29965471"
+       width="1.5993094"
+       height="1.5993094">
+      <feGaussianBlur
+         stdDeviation="137.71656"
+         id="feGaussianBlur82"
+         result="fbSourceGraphic" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix94" />
+      <feTurbulence
+         id="feTurbulence94"
+         type="fractalNoise"
+         baseFrequency="20 40"
+         numOctaves="4"
+         seed="360"
+         result="turbulence"
+         in="fbSourceGraphic" />
+      <feComposite
+         id="feComposite94"
+         in="fbSourceGraphic"
+         in2="turbulence"
+         operator="in"
+         result="composite1" />
+      <feColorMatrix
+         id="feColorMatrix95"
+         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 7.08 -1 "
+         result="color" />
+      <feFlood
+         id="feFlood95"
+         flood-opacity="0"
+         flood-color="rgb(21,40,57)"
+         result="flood" />
+      <feMerge
+         id="feMerge95"
+         result="merge">
+        <feMergeNode
+           id="feMergeNode95"
+           in="flood" />
+        <feMergeNode
+           id="feMergeNode96"
+           in="color" />
+      </feMerge>
+      <feComposite
+         id="feComposite96"
+         in2="fbSourceGraphic"
+         operator="in"
+         result="composite2" />
+    </filter>
+  </defs>
+  <g
+     id="layer1">
+    <circle
+       style="mix-blend-mode:normal;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke-width:8.48114;filter:url(#filter82)"
+       id="circle81"
+       cx="967.93896"
+       cy="539.92206"
+       r="551.50098"
+       transform="matrix(0.77305331,0,0,0.77305331,219.67054,122.53352)" />
+    <circle
+       style="fill:#ffffff;stroke-width:0.773053"
+       id="path1"
+       cx="962.01184"
+       cy="536.7453"
+       r="373.92822" />
+    <circle
+       style="fill:url(#radialGradient3);filter:url(#filter66)"
+       id="circle1"
+       cx="960.14368"
+       cy="535.88843"
+       r="483.70303"
+       transform="matrix(0.77305331,0,0,0.77305331,219.67054,122.53352)" />
+    <circle
+       style="fill:#35e08c;fill-opacity:1;fill-rule:nonzero;stroke-width:0.773053"
+       id="circle71"
+       cx="966.90704"
+       cy="540.23193"
+       r="161.34991" />
+    <circle
+       style="display:inline;fill:url(#radialGradient72);fill-opacity:1;fill-rule:nonzero;filter:url(#filter81)"
+       id="path70"
+       cx="966.60406"
+       cy="540.32288"
+       r="208.7177"
+       transform="matrix(0.77305331,0,0,0.77305331,219.67054,122.53352)" />
+    <circle
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke-width:0.773053"
+       id="path81"
+       cx="967.93896"
+       cy="539.92206"
+       r="50.269154" />
+  </g>
+</svg>
