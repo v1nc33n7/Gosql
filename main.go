@@ -70,6 +70,7 @@ func main() {
 	http.HandleFunc("/task/", handleTask)
 	http.HandleFunc("/anwser/", handleQuery)
 	http.HandleFunc("/list", handleList)
+	http.HandleFunc("/", handleIndex)
 
 	log.Printf("Server running on :3000\n")
 	log.Fatal(http.ListenAndServe(":3000", nil))

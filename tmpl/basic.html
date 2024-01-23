@@ -9,10 +9,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/static/styles.css">
         <script src="/static/htmx.min.js"></script>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Foldit&family=Roboto&display=swap" rel="stylesheet">
+
     </head>
     <body>
         <div class="header">
             <img src="/static/img/eye.png">
+            <p>Table name: ny_house</p>
         </div>
         {{template "body" .}}
     </body>

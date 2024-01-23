@@ -5,8 +5,8 @@
         <div class="question">
             <p>{{.Number}}. {{.Question}}</p>
             <form hx-post="/anwser/{{.Number}}" hx-target="#respond">
-                <textarea name="anwser" cols="80" rows="3"></textarea>
-                <input type="submit" value="Submit">
+                <textarea name="anwser"></textarea>
+                <button type="submit">Submit</button>
             </form>
         </div>
         <div id="respond"></div>

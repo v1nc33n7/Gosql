@@ -1,20 +1,22 @@
-<p>{{.Verify}}</p>
+{{if .Verify}}
+<script>alert("Correct!")</script>
+{{end}}
 
 <table>
     <thead>
         <tr>
-            {{range $col := .Respond.Columns}}
+            {{- range $col := .Respond.Columns}}
             <th>{{$col}}</th>
-            {{end}}
+            {{- end}}
         </tr>
     </thead>
     <tbody>
-        {{range $row := .Respond.Rows}}
+        {{- range $row := .Respond.Rows}}
         <tr>
-            {{range $cell := $row}}
-                <td>{{$cell}}</td>
-            {{end}}
+            {{- range $cell := $row}}
+            <td>{{$cell}}</td>
+            {{- end}}
         </tr>
-        {{end}}
+        {{- end}}
     </tbody>
 </table>

@@ -1,7 +1,7 @@
 <ul>
-    {{range $n := .List}}
+    {{- range $n := .List}}
     <li>
         <a href="/task/{{$n}}">Task {{$n}}</a>
     </li>
-    {{end}}
+    {{- end}}
 </ul>

@@ -93,3 +93,7 @@ func handleList(w http.ResponseWriter, r *http.Request) {
 	tmpl, _ := template.ParseFiles("tmpl/list.html")
 	tmpl.Execute(w, p)
 }
+
+func handleIndex(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/task/1", http.StatusFound)
+}
