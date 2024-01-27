@@ -2,76 +2,33 @@ package main
 
 import (
 	"log"
-	"net/http"
 )
 
-var (
-	querys chan *Request
-	tasks  map[string]*Task
+const (
+	USER   = ""
+	PASS   = ""
+	DBNAME = ""
 )
-
-func loadTasks(table string) error {
-	req := &Request{
-		Query: "SELECT * FROM " + table,
-		Done:  make(chan error),
-	}
-	querys <- req
-
-	err := <-req.Done
-	if err != nil {
-		return err
-	}
-
-	tasks = make(map[string]*Task)
-	for k := range req.Respond.Rows {
-		solution := &Request{
-			Query: req.Respond.Rows[k][2],
-			Done:  make(chan error),
-		}
-		querys <- solution
-
-		err = <-solution.Done
-		if err != nil {
-			return err
-		}
-
-		tasks[req.Respond.Rows[k][0]] = &Task{
-			Question: req.Respond.Rows[k][1],
-			Solution: req.Respond.Rows[k][2],
-			Respond:  solution.Respond,
-		}
-	}
-
-	return err
-}
 
 func main() {
-	db := &Database{
-		Addr: "",
-		User: "",
-		Pass: "",
-		Name: "",
+	db, err := createDatabase(USER, PASS, DBNAME)
+	if err != nil {
+		log.Panic(err)
 	}
 
-	querys = make(chan *Request)
+	wait := make(chan bool)
 	go func() {
-		err := db.runQuerys(querys)
+		err = db.runQueue(wait)
 		if err != nil {
-			log.Fatal(err)
+			log.Panic(err)
 		}
 	}()
+	<-wait
 
-	err := loadTasks("ny_house_tasks")
+	err = db.loadTable("ny_house", "ny_house_tasks")
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
 
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	http.HandleFunc("/task/", handleTask)
-	http.HandleFunc("/anwser/", handleQuery)
-	http.HandleFunc("/list", handleList)
-	http.HandleFunc("/", handleIndex)
-
-	log.Printf("Server running on :3000\n")
-	log.Fatal(http.ListenAndServe(":3000", nil))
+	runHandlers(db)
 }

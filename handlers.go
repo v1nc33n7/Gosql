@@ -1,99 +1,139 @@
 package main
 
 import (
-	"fmt"
+	"errors"
 	"html/template"
 	"net/http"
 	"reflect"
+	"regexp"
+	"sort"
 	"strconv"
 )
 
 type Page struct {
-	Number   int
+	Name     string
+	Number   string
 	Question string
+}
 
+type Anwser struct {
 	Respond Table
 	Verify  bool
-
-	List []int
-
-	Next     int
-	Previous int
+	Error   string
 }
 
-func urlNumber(r *http.Request, url string) (int, string) {
-	sNum := r.URL.Path[len(url):]
-	num, _ := strconv.Atoi(sNum)
-
-	return num, sNum
+type List struct {
+	Name  string
+	Tasks []int
 }
 
-func handleTask(w http.ResponseWriter, r *http.Request) {
-	num, sNum := urlNumber(r, "/task/")
-	if num == 0 || num > len(tasks) || num < 1 {
-		http.Redirect(w, r, "/task/1", http.StatusFound)
+func findUrlVars(r *http.Request) (string, string, error) {
+	re := regexp.MustCompile(`^/[a|q]/(\w+)/(\d)$`)
+	urlVars := re.FindStringSubmatch(r.URL.Path)
+
+	if len(urlVars) != 3 {
+		return "", "", errors.New("wrong url")
 	}
 
-	task, ok := tasks[sNum]
-	if !ok {
+	return urlVars[1], urlVars[2], nil
+}
+
+func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
+	t, _ := template.ParseFiles("tmpl/basic.html", "tmpl/"+tmpl+".html")
+	t.ExecuteTemplate(w, "basic", p)
+}
+
+func handleList(w http.ResponseWriter, r *http.Request, db *Database) {
+	l := make([]List, 0)
+
+	for k, v := range db.Tasks {
+		list := List{Name: k}
+		for kv := range v {
+			kvNumber, _ := strconv.Atoi(kv)
+			list.Tasks = append(list.Tasks, kvNumber)
+		}
+		sort.Ints(list.Tasks)
+		l = append(l, list)
+	}
+
+	t, _ := template.ParseFiles("tmpl/list.html")
+	t.Execute(w, l)
+}
+
+func handleIndex(w http.ResponseWriter, r *http.Request) {
+	renderTemplate(w, "index", nil)
+}
+
+func handleAnwser(w http.ResponseWriter, r *http.Request, db *Database) {
+	table, number, err := findUrlVars(r)
+	if err != nil {
 		return
 	}
 
-	p := &Page{
-		Number:   num,
-		Question: task.Question,
-		Next:     num + 1,
-		Previous: num - 1,
-	}
-
-	tmpl, _ := template.ParseFiles("tmpl/task.html", "tmpl/basic.html")
-	tmpl.ExecuteTemplate(w, "basic", p)
-}
-
-func handleQuery(w http.ResponseWriter, r *http.Request) {
-	_, sNum := urlNumber(r, "/anwser/")
-	anwser := r.FormValue("anwser")
-
-	task, ok := tasks[sNum]
+	task, ok := db.Tasks[table][number]
 	if !ok {
 		return
 	}
 
 	req := &Request{
-		Query: anwser,
+		Query: r.FormValue("anwser"),
 		Done:  make(chan error),
 	}
-	querys <- req
+	db.Listen <- req
 
-	err := <-req.Done
+	t, _ := template.ParseFiles("tmpl/table.html")
+
+	err = <-req.Done
 	if err != nil {
-		fmt.Fprintf(w, "%v", err)
+		a := &Anwser{
+			Error: "Error: " + err.Error()[4:],
+		}
+		t.Execute(w, a)
+		return
+	}
+
+	a := &Anwser{
+		Respond: req.Respond,
+		Verify:  reflect.DeepEqual(task.Solution, req.Respond),
+	}
+
+	t.Execute(w, a)
+}
+
+func handleQuestion(w http.ResponseWriter, r *http.Request, db *Database) {
+	table, number, err := findUrlVars(r)
+	if err != nil {
+		return
+	}
+
+	task, ok := db.Tasks[table][number]
+	if !ok {
 		return
 	}
 
 	p := &Page{
-		Respond: req.Respond,
-		Verify:  reflect.DeepEqual(req.Respond, task.Respond),
+		Name:     table,
+		Number:   number,
+		Question: task.Question,
 	}
 
-	tmpl, _ := template.ParseFiles("tmpl/table.html")
-	tmpl.Execute(w, p)
+	renderTemplate(w, "task", p)
 }
 
-func handleList(w http.ResponseWriter, r *http.Request) {
-	list := make([]int, 0)
-	for i := 1; i <= len(tasks); i++ {
-		list = append(list, i)
-	}
+func runHandlers(db *Database) {
+	fs := http.FileServer(http.Dir("static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	p := &Page{
-		List: list,
-	}
+	http.HandleFunc("/", handleIndex)
+	http.HandleFunc("/list", func(w http.ResponseWriter, r *http.Request) {
+		handleList(w, r, db)
+	})
+	http.HandleFunc("/q/", func(w http.ResponseWriter, r *http.Request) {
+		handleQuestion(w, r, db)
+	})
+	http.HandleFunc("/a/", func(w http.ResponseWriter, r *http.Request) {
+		handleAnwser(w, r, db)
+	})
 
-	tmpl, _ := template.ParseFiles("tmpl/list.html")
-	tmpl.Execute(w, p)
-}
-
-func handleIndex(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, "/task/1", http.StatusFound)
+	http.ListenAndServe(":3000", nil)
 }

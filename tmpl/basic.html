@@ -17,10 +17,14 @@
     </head>
     <body>
         <div class="header">
-            <img src="/static/img/eye.png">
-            <p>Table name: ny_house</p>
+            <a href="/">
+                <img src="/static/img/eye.png">
+            </a>
         </div>
-        {{template "body" .}}
+        <div class="middle">
+            <div class="list" hx-get="/list" hx-trigger="load" hx-swap="innerHTML"></div>
+            {{template "body" .}}
+        </div>
     </body>
 </html>
 {{end}}

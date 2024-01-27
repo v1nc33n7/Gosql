@@ -15,23 +15,25 @@ type Table struct {
 	Rows    [][]string
 }
 
+type Task struct {
+	Question string
+	Solution Table
+}
+
 type Request struct {
 	Query   string
 	Respond Table
 	Done    chan error
 }
 
-type Task struct {
-	Question string
-	Solution string
-	Respond  Table
-}
-
 type Database struct {
-	Addr string
-	User string
-	Pass string
-	Name string
+	// 1. List of all tables, tasks and solutions
+	// 2. Channel for processing querys
+	// 3. Postgres driver
+
+	Tasks  map[string]map[string]*Task
+	Listen chan *Request
+	Driver *sql.DB
 }
 
 func (r *Request) query(db *sql.DB) error {
@@ -74,24 +76,75 @@ func (r *Request) query(db *sql.DB) error {
 	return nil
 }
 
-func (d *Database) runQuerys(req chan *Request) error {
-	connStr := fmt.Sprintf("user=%s dbname=%s password=%s", d.User, d.Name, d.Pass)
-
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
+func (d *Database) runQueue(wait chan bool) error {
+	defer d.Driver.Close()
+	defer close(d.Listen)
 
 	queue := make(chan int, QueueRate)
-	for r := range req {
+	wait <- true
+	for r := range d.Listen {
 		queue <- 1
 
 		go func(r *Request) {
-			r.Done <- r.query(db)
+			r.Done <- r.query(d.Driver)
 			<-queue
 		}(r)
 	}
 
 	return nil
+}
+
+func (d *Database) loadTable(table string, tasks string) error {
+	reqTasks := &Request{
+		Query: fmt.Sprintf("SELECT * FROM %s", tasks),
+		Done:  make(chan error),
+	}
+	d.Listen <- reqTasks
+
+	err := <-reqTasks.Done
+	if err != nil {
+		return err
+	}
+
+	d.Tasks[table] = make(map[string]*Task)
+	for k := range reqTasks.Respond.Rows {
+		index := reqTasks.Respond.Rows[k][0]
+		question := reqTasks.Respond.Rows[k][1]
+		solution := reqTasks.Respond.Rows[k][2]
+
+		reqSolution := &Request{
+			Query: solution,
+			Done:  make(chan error),
+		}
+		d.Listen <- reqSolution
+
+		err := <-reqSolution.Done
+		if err != nil {
+			return err
+		}
+
+		d.Tasks[table][index] = &Task{
+			Question: question,
+			Solution: reqSolution.Respond,
+		}
+	}
+
+	return nil
+}
+
+func createDatabase(u string, p string, n string) (*Database, error) {
+	connStr := fmt.Sprintf("user=%s password=%s dbname=%s", u, p, n)
+
+	pq, err := sql.Open("postgres", connStr)
+	if err != nil {
+		return nil, err
+	}
+
+	db := &Database{
+		Tasks:  make(map[string]map[string]*Task),
+		Driver: pq,
+		Listen: make(chan *Request),
+	}
+
+	return db, nil
 }
