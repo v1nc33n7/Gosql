@@ -1,15 +1,13 @@
 {{define "body"}}
-<div class="middle">
-    <div class="list" hx-get="/list" hx-trigger="load" hx-swap="innerHTML"></div>
-    <div class="task">
-        <div class="question">
-            <p>{{.Number}}. {{.Question}}</p>
-            <form hx-post="/anwser/{{.Number}}" hx-target="#respond">
-                <textarea name="anwser"></textarea>
-                <button type="submit">Submit</button>
-            </form>
-        </div>
-        <div id="respond"></div>
+<div class="task">
+    <div class="question">
+        <p>Table: {{.Name}}</p>
+        <p>{{.Number}}. {{.Question}}</p>
+        <form hx-post="/a/{{.Name}}/{{.Number}}" hx-target="#respond" hx-swap="innerHTML">
+            <textarea name="anwser"></textarea>
+            <button type="submit">Submit</button>
+        </form>
     </div>
+    <div id="respond"></div>
 </div>
 {{end}}

@@ -2,6 +2,12 @@
 <script>alert("Correct!")</script>
 {{end}}
 
+{{if .Error}}
+<div class="error">
+    <p>{{.Error}}</p>
+</div>
+{{end}}
+
 <table>
     <thead>
         <tr>

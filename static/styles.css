@@ -19,16 +19,12 @@ body {
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     color: white;
     height: 10vh;
     box-sizing: border-box;
     border: 2px solid rgb(65, 124, 77);
     background-color: rgb(24, 24, 24);
-}
-
-.header p {
-    margin-right: auto;
 }
 
 .header img {
@@ -43,36 +39,46 @@ body {
 }
 
 .list {
-    font-size: 2.5rem;
-    font-family: 'Foldit', sans-serif;
+    color: white;
     min-width: 7vw;
     box-sizing: border-box;
     border: 2px solid rgb(65, 124, 77);
     border-top: none;
     background-color: rgba(24, 24, 24, 0.9);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+}
+
+.list details {
+    width: 100%;
+    margin-top: 2.5vh;
+}
+
+.list details > summary {
+    font-size: large;
     font-weight: bold;
-}
-
-.list ul {
+    width: 100%;
+    margin-left: 1vw;
+    padding-right: 1vw;
+    border: none;
+    cursor: pointer;
     list-style: none;
-    margin-top: 3vh;
-}
-
-.list li:first-child {
-    margin-top: 0;
-}
-
-.list li {
-    margin-top: 1rem;
 }
 
 .list a {
-    text-decoration: none;
     color: white;
-    
+    margin-left: 1vw;
+}
+
+.list p {
+    transition: transform 100ms;
+    margin-top: 0.8vh;
+}
+
+.list p:hover {
+    transform: translateX(0.2vw);
+}
+
+.index {
+    color: white;
 }
 
 .task {
@@ -82,9 +88,9 @@ body {
 
 .question {
     min-height: 10vh;
-    max-width: 48.5%;
+    max-width: 47.5%;
     margin-top: 1.5vh;
-    margin-left: 2%;
+    margin-left: 1%;
     padding-top: 1vh;
     padding-bottom: 1vh;
     background-color: rgba(24, 24, 24, 0.9);
@@ -121,17 +127,26 @@ body {
     height: 2rem;
     width: 4rem;
     margin-left: 1vh;
+    margin-right: 1vh;
+}
+
+.error {
+    font-size: larger;
+    font-weight: bold;
+    margin-top: 1.5vh;
+    margin-left: 1%;
+    color: red;
 }
 
 #respond table {
     height: 60vh;
-    width: 96%;
+    width: 98%;
     display: block;
     overflow-y: scroll;
     border-collapse: collapse;
     font-size: 0.8rem;
     margin-top: 1.5vh;
-    margin-left: 2%;
+    margin-left: 1%;
 }
 
 #respond tr:nth-of-type(odd) {

@@ -31,7 +31,7 @@ type Database struct {
 	// 2. Channel for processing querys
 	// 3. Postgres driver
 
-	Tables map[string]map[string]*Task
+	Tasks  map[string]map[string]*Task
 	Listen chan *Request
 	Driver *sql.DB
 }
@@ -106,7 +106,7 @@ func (d *Database) loadTable(table string, tasks string) error {
 		return err
 	}
 
-	d.Tables[table] = make(map[string]*Task)
+	d.Tasks[table] = make(map[string]*Task)
 	for k := range reqTasks.Respond.Rows {
 		index := reqTasks.Respond.Rows[k][0]
 		question := reqTasks.Respond.Rows[k][1]
@@ -123,7 +123,7 @@ func (d *Database) loadTable(table string, tasks string) error {
 			return err
 		}
 
-		d.Tables[table][index] = &Task{
+		d.Tasks[table][index] = &Task{
 			Question: question,
 			Solution: reqSolution.Respond,
 		}
@@ -141,7 +141,7 @@ func createDatabase(u string, p string, n string) (*Database, error) {
 	}
 
 	db := &Database{
-		Tables: make(map[string]map[string]*Task),
+		Tasks:  make(map[string]map[string]*Task),
 		Driver: pq,
 		Listen: make(chan *Request),
 	}

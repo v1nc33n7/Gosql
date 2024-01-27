@@ -1,7 +1,10 @@
-<ul>
-    {{- range $n := .List}}
-    <li>
-        <a href="/task/{{$n}}">Task {{$n}}</a>
-    </li>
-    {{- end}}
-</ul>
+{{ range $table := .}}
+<details open="true">
+    <summary>{{$table.Name}}</summary>
+    {{range $task := $table.Tasks}}
+        <p>
+            <a href="/q/{{$table.Name}}/{{$task}}">Task: {{$task}}</a>
+        </p>
+    {{end}}
+</details>
+{{end}}

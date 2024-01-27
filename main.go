@@ -5,9 +5,9 @@ import (
 )
 
 const (
-	USER   = "golang"
-	PASS   = "golang"
-	DBNAME = "sqlweb"
+	USER   = ""
+	PASS   = ""
+	DBNAME = ""
 )
 
 func main() {
